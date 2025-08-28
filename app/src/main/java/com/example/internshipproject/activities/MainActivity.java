@@ -1,0 +1,69 @@
+package com.example.internshipproject.activities;
+
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.internshipproject.R;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+
+        SQLiteDatabase suppliersDB = openOrCreateDatabase("suppliers.db",MODE_PRIVATE,null);
+
+
+        goAddPage();
+        goEditPage();
+        goSendServerPage();
+    }
+    public void goAddPage(){
+        Button addClientPage = findViewById(R.id.addClient);
+
+        addClientPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddActivity.class));
+            }
+        });
+    }
+    public void goEditPage(){
+        Button addClientPage = findViewById(R.id.editClient);
+
+        addClientPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, EditActivity.class));
+            }
+        });
+    }
+    public void goSendServerPage(){
+        Button sendServerPage = findViewById(R.id.sendServer);
+
+        sendServerPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SendServerActivity.class));
+            }
+        });
+    }
+
+}

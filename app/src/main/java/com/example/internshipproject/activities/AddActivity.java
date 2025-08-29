@@ -10,8 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.internshipproject.ClientModel;
-import com.example.internshipproject.DataBaseHalper;
+import com.example.internshipproject.Models.ClientModel;
+import com.example.internshipproject.halpers.DataBaseHalper;
+import com.example.internshipproject.halpers.JsonHelper;
 import com.example.internshipproject.R;
 
 
@@ -44,11 +45,14 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DataBaseHalper dbHalper = new DataBaseHalper(AddActivity.this);
-
-                ClientModel newClient = new ClientModel(name.getText().toString(),surname.getText().toString(),type.getSelectedItem().toString(),"");
+                String clientInfo = name.getText().toString()+" "+ surname.getText().toString();
+                ClientModel newClient = new ClientModel(clientInfo,type.getSelectedItem().toString(),"");
                 boolean success = dbHalper.addOneClient(newClient);
+                JsonHelper jsonHelper = new JsonHelper();
+                jsonHelper.addClient(v.getContext(),clientInfo,type.getSelectedItem().toString(),"");
+
                 if (success){
-                    Toast.makeText(AddActivity.this,"true",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddActivity.this,"Supplier Added",Toast.LENGTH_SHORT).show();
                 }
 
             }

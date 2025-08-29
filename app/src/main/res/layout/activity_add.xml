@@ -9,39 +9,43 @@
         android:id="@+id/nameInput"
         android:layout_width="288dp"
         android:layout_height="57dp"
+        android:layout_marginTop="136dp"
         android:hint="Name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="64dp" />
-
-    <EditText
-        android:id="@+id/surnameInput"
-        android:layout_width="288dp"
-        android:layout_height="57dp"
-        android:hint="Surname"
-        app:layout_constraintTop_toBottomOf="@id/nameInput"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/typeInput"
         android:layout_width="288dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/surnameInput"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/surnameInput" />
 
     <Button
         android:id="@+id/submitClient"
         android:layout_width="150dp"
         android:layout_height="75dp"
+        android:layout_marginTop="48dp"
         android:text="Submit Client"
-        app:layout_constraintTop_toBottomOf="@id/typeInput"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeInput" />
+
+    <EditText
+        android:id="@+id/surnameInput"
+        android:layout_width="288dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="28dp"
+        android:hint="Surname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

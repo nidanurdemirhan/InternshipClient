@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.internshipproject.DataBaseHalper;
+import com.example.internshipproject.halpers.JsonHelper;
 import com.example.internshipproject.R;
 
 
@@ -23,23 +22,18 @@ public class EditReservedDaysActivity extends AppCompatActivity {
         EditText days = findViewById(R.id.reservedDaysInput);
 
         TextView clientInfo =findViewById(R.id.info);
+        TextView clientType =findViewById(R.id.type);
         Intent intent = getIntent();
         clientInfo.setText(intent.getStringExtra("clientInfo"));
+        clientType.setText(intent.getStringExtra("clientType"));//bu bilgi contract adapterdan geliyo onu bi değiştir
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //burda database değiştirmek yerine yeni listeler oluşturulacak
-                DataBaseHalper db = new DataBaseHalper(v.getContext());
-                boolean aa = db.changeReservedDays(clientInfo.getText().toString(),days.getText().toString());
-                if(aa){
-                    Toast.makeText(EditReservedDaysActivity.this,days.getText().toString(),Toast.LENGTH_SHORT).show();
-                }
-
-
+                JsonHelper jsonHelper = new JsonHelper();
+                jsonHelper.updateReservedDays(v.getContext(),clientInfo.getText().toString(),days.getText().toString());
             }
         });
-
 
     }
 

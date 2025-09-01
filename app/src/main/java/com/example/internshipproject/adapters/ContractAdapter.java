@@ -6,17 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.internshipproject.ClientModel;
+import com.example.internshipproject.Models.ClientModel;
 import com.example.internshipproject.R;
-import com.example.internshipproject.activities.EditClientActivity;
 import com.example.internshipproject.activities.EditReservedDaysActivity;
-import com.example.internshipproject.activities.SendServerActivity;
 
 import java.util.List;
 
@@ -46,6 +43,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditReservedDaysActivity.class);
                 intent.putExtra("clientInfo", holder.clientInfo.getText().toString());
+                intent.putExtra("clientType", holder.clientInfo.getText().toString());
                 //BELKİ BURDA Bİ DE RESERVED DAYS VERMEN GEREKEBİLİR BİLMİYORUM
                 v.getContext().startActivity(intent);
             }
@@ -60,10 +58,12 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
     public static class ContractViewHolder extends RecyclerView.ViewHolder {
         Button selectClient;
         TextView clientInfo;
+        TextView clientType;
         public ContractViewHolder(@NonNull View itemView) {
             super(itemView);
             selectClient = itemView.findViewById(R.id.pickClientButton);
             clientInfo = itemView.findViewById(R.id.clientInfo);
+            //clientType burda assignlanıcak (ui kısmında type yok)
 
         }
 

@@ -8,10 +8,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.internshipproject.DataBaseHalper;
+import com.example.internshipproject.halpers.DataBaseHalper;
+import com.example.internshipproject.halpers.JsonHelper;
 import com.example.internshipproject.R;
 
 public class EditClientActivity extends AppCompatActivity {
@@ -22,12 +21,13 @@ public class EditClientActivity extends AppCompatActivity {
         setContentView(R.layout.edit_page);
         Intent intent = getIntent();
 
-
         TextView name = findViewById(R.id.textView);
         TextView surname = findViewById(R.id.textView2);
+
         String clientInfo =intent.getStringExtra("clientInfo");
         name.setText(clientInfo.split(" ")[0]);
         surname.setText(clientInfo.split(" ")[1]);
+
         spinnerOptions = findViewById(R.id.typeInputChange);
         String[] options = {"Stock", "Contract", "Both"};
 
@@ -40,6 +40,8 @@ public class EditClientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DataBaseHalper db = new DataBaseHalper(v.getContext());
+                JsonHelper jsonHelper = new JsonHelper();
+                jsonHelper.updateType(v.getContext(),clientInfo,spinnerOptions.getSelectedItem().toString());
                 boolean aa = db.changeClientStatus(clientInfo,spinnerOptions.getSelectedItem().toString());
                 if(aa){
                     Toast.makeText(EditClientActivity.this,spinnerOptions.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();

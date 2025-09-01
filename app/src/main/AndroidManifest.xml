@@ -19,6 +19,8 @@
         <activity android:name=".activities.SendServerActivity" />
         <activity android:name=".activities.EditClientActivity" />
         <activity android:name=".activities.EditReservedDaysActivity" />
+        <activity android:name=".activities.PortInformationActivity" />
+
 
         <activity
             android:name=".activities.MainActivity"

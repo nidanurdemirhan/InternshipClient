@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.internshipproject.R;
+import com.example.internshipproject.halpers.DataBaseHalper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,37 +28,25 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
         SQLiteDatabase suppliersDB = openOrCreateDatabase("suppliers.db",MODE_PRIVATE,null);
 
-
-        goAddPage();
-        goEditPage();
-        goSendServerPage();
-    }
-    public void goAddPage(){
         Button addClientPage = findViewById(R.id.addClient);
-
         addClientPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AddActivity.class));
             }
         });
-    }
-    public void goEditPage(){
-        Button addClientPage = findViewById(R.id.editClient);
 
-        addClientPage.setOnClickListener(new View.OnClickListener() {
+        Button editClientPage = findViewById(R.id.editClient);
+        editClientPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, EditActivity.class));
             }
         });
-    }
-    public void goSendServerPage(){
-        Button sendServerPage = findViewById(R.id.sendServer);
 
+        Button sendServerPage = findViewById(R.id.sendServer);
         sendServerPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,5 +54,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

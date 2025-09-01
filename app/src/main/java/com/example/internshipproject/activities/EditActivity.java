@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.internshipproject.adapters.ClientAdapter;
-import com.example.internshipproject.ClientModel;
+import com.example.internshipproject.Models.ClientModel;
 import com.example.internshipproject.R;
+import com.example.internshipproject.halpers.DataBaseHalper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,34 +45,14 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
+
     public void searchClients(){
         clientList.clear();
         SQLiteDatabase db = openOrCreateDatabase("suppliers.db", MODE_PRIVATE, null);
         EditText searchText = findViewById(R.id.searchInput);
-        Cursor cursor;
-        if(searchText.getText().toString().length()==0){
-            cursor = db.rawQuery("SELECT * FROM suppliers", null);
-        }
-        else{
-            cursor = db.rawQuery("SELECT * FROM suppliers WHERE supplierInfo = '" + searchText.getText().toString() + "'", null);
-        }
-
-        if (cursor.moveToFirst()) {
-            do {
-                String info = cursor.getString(cursor.getColumnIndexOrThrow("supplierInfo"));
-                String type = cursor.getString(cursor.getColumnIndexOrThrow("supplierType"));
-                String resDays = cursor.getString(cursor.getColumnIndexOrThrow("lastReservedDays"));
-                clientList.add(new ClientModel(info, type,resDays));
-            } while (cursor.moveToNext());
-
-        }
-
-        cursor.close();
+        DataBaseHalper dbHalper = new DataBaseHalper(recyclerView.getContext());
+        clientList.addAll(dbHalper.listClients(searchText.getText().toString(),db));
         db.close();
-        /*if (clientList.size()>0){
-            String text = Integer.toString(clientList.size());
-            Toast.makeText(EditActivity.this,text,Toast.LENGTH_SHORT).show();
-        }*/
         clientAdapter.notifyDataSetChanged();
 
     }

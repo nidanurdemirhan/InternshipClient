@@ -1,4 +1,4 @@
-package com.example.internshipproject;
+package com.example.internshipproject.Models;
 
 public class ClientModel {
     private String supplierInfo;

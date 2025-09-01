@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="168dp"
-        android:text="Server Ip"
+        android:hint="Server Ip"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="148dp" />
@@ -20,13 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:text="Server Port"
+        android:hint="Server Port"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="139dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/connectServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connect"

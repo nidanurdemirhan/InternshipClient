@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.internshipproject.ClientModel;
-import com.example.internshipproject.DataBaseHalper;
+import com.example.internshipproject.Models.ClientModel;
+import com.example.internshipproject.halpers.DataBaseHalper;
 import com.example.internshipproject.R;
 import com.example.internshipproject.activities.EditClientActivity;
 

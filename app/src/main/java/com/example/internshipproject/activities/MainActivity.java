@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
-        SupplierAssignmentDao supplierDao = db.supplierAssignmentDao();
-        //supplierDao.deleteAll();
 
         Button addClientPage = findViewById(R.id.addClient);
         addClientPage.setOnClickListener(new View.OnClickListener() {

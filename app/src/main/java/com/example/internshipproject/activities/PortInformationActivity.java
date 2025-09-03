@@ -8,14 +8,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.internshipproject.AppDatabase;
+import com.example.internshipproject.DatabaseClient;
 import com.example.internshipproject.R;
-import com.example.internshipproject.halpers.DataBaseHalper;
+import com.example.internshipproject.entities.Supplier;
+import com.example.internshipproject.entities.SupplierAssignments;
+import com.example.internshipproject.interfaces.SupplierAssignmentDao;
+import com.example.internshipproject.interfaces.SupplierDao;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class PortInformationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +51,25 @@ public class PortInformationActivity extends AppCompatActivity {
                          DataInputStream dis = new DataInputStream(socket.getInputStream())) {
 
                         File file = new File(getFilesDir(), "suppliers.json");
-                        String fullPath = file.getAbsolutePath();
-                        Log.d("FILE_PATH", fullPath);
+
                         byte[] bytes = null;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             bytes = Files.readAllBytes(file.toPath());
+                        } else {
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            FileInputStream fis = new FileInputStream(file);
+                            byte[] buffer = new byte[1024];
+                            int read;
+                            while ((read = fis.read(buffer)) != -1) {
+                                bos.write(buffer, 0, read);
+                            }
+                            fis.close();
+                            bytes = bos.toByteArray();
                         }
 
                         dos.writeInt(bytes.length);
                         dos.write(bytes);
-                        dos.flush();
-                        Log.d("CLIENT", "File send: " + file.getAbsolutePath());
+                        dos.flush();// buna gerek yokmuş
 
                         int length = dis.readInt();
                         byte[] received = new byte[length];
@@ -57,12 +80,9 @@ public class PortInformationActivity extends AppCompatActivity {
                             fos.write(received);
                         }
 
-                        Log.d("CLIENT", "File Received: " + receivedFile.getAbsolutePath());
+                        reservedDaysUpdate(file);
+                        saveAssignments(receivedFile);
 
-                        DataBaseHalper db = new DataBaseHalper(v.getContext());
-                        db.changeReservedDays();
-                        int month = 5; // which month
-                        db.addAssignments(month,receivedFile);
                         startActivity(new Intent(PortInformationActivity.this, SendServerActivity.class));
 
                     } catch (Exception e) {
@@ -70,11 +90,55 @@ public class PortInformationActivity extends AppCompatActivity {
                     }
                 }).start();
 
-
-
-
             }
         });
 
     }
+
+    public void reservedDaysUpdate(File file) throws IOException, JSONException {
+
+        String content = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            content = new String(Files.readAllBytes(file.toPath()));
+        }
+
+        JSONObject jsonObject = new JSONObject(content);
+        JSONArray clientsArray = jsonObject.getJSONArray("clients");
+
+        AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
+        SupplierDao supplierDao = db.supplierDao();
+
+        for(int i= 0 ; i <clientsArray.length(); i++){
+            JSONObject client = clientsArray.getJSONObject(i);
+            supplierDao.updateReservedDays(client.getString("supplierInfo"),client.getString("lastReservedDays"));
+        }
+
+    }
+    public void saveAssignments(File file) throws IOException, JSONException {
+        AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
+        SupplierAssignmentDao supplierAssignmentDao = db.supplierAssignmentDao();
+
+        String content = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            content = new String(Files.readAllBytes(file.toPath()));
+        }
+
+        JSONObject jsonObject = new JSONObject(content);
+        JSONArray assignmentArray = jsonObject.getJSONArray("Assignments");
+
+        for(int i= 0 ; i <assignmentArray.length(); i++){
+            JSONObject assignment = assignmentArray.getJSONObject(i);
+
+            SupplierAssignments suppAssignment = new SupplierAssignments(assignment.getString("contractSupplier"),assignment.getString("stockSupplier"),assignment.getString("dayOfMonth"));
+
+            Calendar calendar = Calendar.getInstance();
+
+            int monthZeroBased = calendar.get(Calendar.MONTH);
+            suppAssignment.month =Integer.toString(monthZeroBased+1);
+
+            supplierAssignmentDao.insert(suppAssignment);
+        }
+
+    }
+
 }

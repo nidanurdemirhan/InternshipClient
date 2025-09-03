@@ -1,11 +1,9 @@
 package com.example.internshipproject.halpers;
 
 import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.*;
 
 public class JsonHelper {
@@ -69,6 +67,30 @@ public class JsonHelper {
             e.printStackTrace();
         }
     }
+    public void deleteClient(Context context, String supplierInfoToDelete) {
+        try {
+            JSONObject root = loadOrCreate(context);
+            JSONArray clients = root.getJSONArray("clients");
+
+            JSONArray updatedClients = new JSONArray();
+
+            for (int i = 0; i < clients.length(); i++) {
+                JSONObject client = clients.getJSONObject(i);
+                String info = client.getString("supplierInfo");
+                if (!info.equals(supplierInfoToDelete)) {
+                    updatedClients.put(client);
+                }
+            }
+
+            root.put("clients", updatedClients);
+
+            save(context, root);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public  void updateReservedDays(Context context, String supplierInfo, String newReservedDays) {
         JSONObject root = loadOrCreate(context);

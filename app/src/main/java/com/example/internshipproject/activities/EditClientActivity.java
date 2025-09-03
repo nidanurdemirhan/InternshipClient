@@ -7,26 +7,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.internshipproject.halpers.DataBaseHalper;
+import com.example.internshipproject.AppDatabase;
+import com.example.internshipproject.DatabaseClient;
 import com.example.internshipproject.halpers.JsonHelper;
 import com.example.internshipproject.R;
+import com.example.internshipproject.interfaces.SupplierDao;
 
 public class EditClientActivity extends AppCompatActivity {
-    Spinner spinnerOptions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Spinner spinnerOptions;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_page);
         Intent intent = getIntent();
 
-        TextView name = findViewById(R.id.textView);
-        TextView surname = findViewById(R.id.textView2);
+        TextView info = findViewById(R.id.textView);
+        TextView type = findViewById(R.id.textView2);
 
         String clientInfo =intent.getStringExtra("clientInfo");
-        name.setText(clientInfo.split(" ")[0]);
-        surname.setText(clientInfo.split(" ")[1]);
+        String clientType = intent.getStringExtra("clientType");
+        info.setText(clientInfo);
+        type.setText(clientType);
+
 
         spinnerOptions = findViewById(R.id.typeInputChange);
         String[] options = {"Stock", "Contract", "Both"};
@@ -39,14 +42,12 @@ public class EditClientActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataBaseHalper db = new DataBaseHalper(v.getContext());
+                AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
+                SupplierDao supplierDao = db.supplierDao();
+                supplierDao.updateType(clientInfo,spinnerOptions.getSelectedItem().toString());
+
                 JsonHelper jsonHelper = new JsonHelper();
                 jsonHelper.updateType(v.getContext(),clientInfo,spinnerOptions.getSelectedItem().toString());
-                boolean aa = db.changeClientStatus(clientInfo,spinnerOptions.getSelectedItem().toString());
-                if(aa){
-                    Toast.makeText(EditClientActivity.this,spinnerOptions.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
-
-                }
             }
         });
     }

@@ -1,6 +1,5 @@
 package com.example.internshipproject.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,40 +10,39 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.internshipproject.Models.ClientModel;
 import com.example.internshipproject.R;
 import com.example.internshipproject.activities.EditReservedDaysActivity;
+import com.example.internshipproject.entities.Supplier;
 
 import java.util.List;
 
 public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.ContractViewHolder>{
-    Context context;
-    List<ClientModel> allClients;
-    public ContractAdapter(Context context, List<ClientModel> clients) {
-        this.context = context;
+    List<Supplier> allClients;
+    public ContractAdapter( List<Supplier> clients) {
         this.allClients = clients;
     }
 
     @NonNull
     @Override
     public ContractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.client_selection, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.client_selection, parent, false);
         return new ContractViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContractViewHolder holder, int position) {
-        ClientModel client = allClients.get(position);
-        //String info = client.getSupplierInfo()+" "+client.getSupplierType()+ " " +client.getLastReservedDays();
-        String info = client.getSupplierInfo();
+        Supplier client = allClients.get(position);
+        String info = client.supplierInfo;
+        String type = client.supplierType;
         holder.clientInfo.setText(info);
+        holder.clientType.setText(type);
+
         holder.selectClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditReservedDaysActivity.class);
                 intent.putExtra("clientInfo", holder.clientInfo.getText().toString());
-                intent.putExtra("clientType", holder.clientInfo.getText().toString());
-                //BELKİ BURDA Bİ DE RESERVED DAYS VERMEN GEREKEBİLİR BİLMİYORUM
+                intent.putExtra("clientType", holder.clientType.getText().toString());
                 v.getContext().startActivity(intent);
             }
         });
@@ -63,7 +61,7 @@ public class ContractAdapter extends RecyclerView.Adapter<ContractAdapter.Contra
             super(itemView);
             selectClient = itemView.findViewById(R.id.pickClientButton);
             clientInfo = itemView.findViewById(R.id.clientInfo);
-            //clientType burda assignlanıcak (ui kısmında type yok)
+            clientType = itemView.findViewById(R.id.clientType);
 
         }
 

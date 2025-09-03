@@ -1,7 +1,6 @@
 package com.example.internshipproject.activities;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,8 +11,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.internshipproject.AppDatabase;
+import com.example.internshipproject.DatabaseClient;
 import com.example.internshipproject.R;
-import com.example.internshipproject.halpers.DataBaseHalper;
+import com.example.internshipproject.interfaces.SupplierAssignmentDao;
+import com.example.internshipproject.interfaces.SupplierDao;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        SQLiteDatabase suppliersDB = openOrCreateDatabase("suppliers.db",MODE_PRIVATE,null);
+        AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
+        SupplierAssignmentDao supplierDao = db.supplierAssignmentDao();
+        //supplierDao.deleteAll();
 
         Button addClientPage = findViewById(R.id.addClient);
         addClientPage.setOnClickListener(new View.OnClickListener() {

@@ -7,13 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.internshipproject.Models.ClientModel;
-import com.example.internshipproject.halpers.DataBaseHalper;
+import com.example.internshipproject.AppDatabase;
+import com.example.internshipproject.DatabaseClient;
+import com.example.internshipproject.entities.Supplier;
 import com.example.internshipproject.halpers.JsonHelper;
 import com.example.internshipproject.R;
+import com.example.internshipproject.interfaces.SupplierDao;
 
 
 public class AddActivity extends AppCompatActivity {
@@ -44,15 +44,26 @@ public class AddActivity extends AppCompatActivity {
         submitClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataBaseHalper dbHalper = new DataBaseHalper(AddActivity.this);
-                String clientInfo = name.getText().toString()+" "+ surname.getText().toString();
-                ClientModel newClient = new ClientModel(clientInfo,type.getSelectedItem().toString(),"");
-                boolean success = dbHalper.addOneClient(newClient);
-                JsonHelper jsonHelper = new JsonHelper();
-                jsonHelper.addClient(v.getContext(),clientInfo,type.getSelectedItem().toString(),"");
+                AppDatabase db = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
+                SupplierDao supplierDao = db.supplierDao();
 
-                if (success){
-                    Toast.makeText(AddActivity.this,"Supplier Added",Toast.LENGTH_SHORT).show();
+                Supplier supplier = new Supplier();
+                supplier.supplierInfo = name.getText().toString()+" "+ surname.getText().toString();
+
+                if(!supplier.supplierInfo.matches(".*\\d.*")){
+
+                    supplier.supplierType = type.getSelectedItem().toString();
+                    supplier.lastReservedDays = "";
+
+                    supplierDao.insert(supplier);
+                    JsonHelper jsonHelper = new JsonHelper();
+                    jsonHelper.addClient(v.getContext(),name.getText().toString()+" "+ surname.getText().toString(),type.getSelectedItem().toString(),"");
+
+                    finish();
+                    startActivity(getIntent());
+
+                }else{
+                    Toast.makeText(AddActivity.this, "Invalid name/surname.", Toast.LENGTH_SHORT).show();
                 }
 
             }

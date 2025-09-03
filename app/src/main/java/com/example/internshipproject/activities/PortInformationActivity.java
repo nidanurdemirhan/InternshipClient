@@ -69,7 +69,6 @@ public class PortInformationActivity extends AppCompatActivity {
 
                         dos.writeInt(bytes.length);
                         dos.write(bytes);
-                        dos.flush();// buna gerek yokmuş
 
                         int length = dis.readInt();
                         byte[] received = new byte[length];

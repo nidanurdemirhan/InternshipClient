@@ -12,6 +12,8 @@
         android:id="@+id/addClient"
         android:layout_width="150dp"
         android:layout_height="75dp"
+        android:backgroundTint="#435387"
+        android:textColor="#FFFFFF"
         android:text="Add Client" />
 
     <Button
@@ -19,6 +21,8 @@
         android:layout_width="150dp"
         android:layout_height="75dp"
         android:text="Edit Client"
+        android:backgroundTint="#435387"
+        android:textColor="#FFFFFF"
         android:layout_marginTop="16dp"/>
 
     <Button
@@ -26,6 +30,8 @@
         android:layout_width="150dp"
         android:layout_height="75dp"
         android:text="Send Server"
+        android:backgroundTint="#435387"
+        android:textColor="#FFFFFF"
         android:layout_marginTop="16dp"/>
 
 </LinearLayout>

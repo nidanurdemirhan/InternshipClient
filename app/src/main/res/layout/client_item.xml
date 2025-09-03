@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
+    <!-- Üstteki TextView'ler yan yana, orantılı -->
     <TextView
         android:id="@+id/clientInfo"
         android:layout_width="0dp"
@@ -12,29 +13,48 @@
         android:text="Client Name"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/clientType"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="start"/>
 
+    <TextView
+        android:id="@+id/clientType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Client Type"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/clientInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="end"/>
+
+    <!-- Alttaki Button'lar mevcut boyut ve renkleriyle -->
     <Button
         android:id="@+id/pickClientButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
         android:layout_marginTop="8dp"
         android:text="Edit"
+        android:backgroundTint="#435387"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clientInfo" />
+        app:layout_constraintTop_toBottomOf="@id/clientInfo"/>
 
     <Button
         android:id="@+id/deleteClientButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Delete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:backgroundTint="#435387"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toEndOf="@id/pickClientButton"
-        app:layout_constraintTop_toBottomOf="@id/clientInfo" />
-
+        app:layout_constraintTop_toBottomOf="@id/clientInfo"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

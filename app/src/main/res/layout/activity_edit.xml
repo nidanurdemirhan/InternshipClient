@@ -24,6 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
+        android:backgroundTint="#435387"
+        android:textColor="#FFFFFF"
         app:layout_constraintTop_toTopOf="@id/searchInput"
         app:layout_constraintBottom_toBottomOf="@id/searchInput"
         app:layout_constraintEnd_toEndOf="parent"/>
